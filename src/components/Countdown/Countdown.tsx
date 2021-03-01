@@ -1,19 +1,20 @@
-import { useState, useEffect, useContext } from 'react';
-import styles from '../styles/components/Countdown.module.css';
+import { useContext, ButtonHTMLAttributes } from 'react';
 import { FiChevronRight, FiX, FiCheck } from "react-icons/fi";
-import { ChallengesContext } from '../contexts/ChallengesContext';
-import { CountdownContext } from '../contexts/CountdownContext';
+import { CountdownContext } from '../../contexts/CountdownContext';
+import { CountdownButton, CountdownButtonActive, CountdownContainer } from './styles';
 
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
-export function Countdown() {
-  const { 
-    minutes, 
-    seconds, 
-    finished, 
-    active, 
-    startCountdown, 
-    resetCountdown, 
+const Countdown: React.FC<ButtonProps> = () => {
+  const {
+    minutes,
+    seconds,
+    hasFinished,
+    isActive,
+    startCountdown,
+    resetCountdown,
   } = useContext(CountdownContext)
+
   //primeiro vai transformar a variavel em string.
   //split vai separar a string em dois, ex: '25' = '2' '5'.
   //padStart vai colocar um 0 caso a string tenha 1 posição, ex: '5' = '05' 
@@ -24,7 +25,7 @@ export function Countdown() {
   return (
     <div>
 
-      <div className={styles.countdownContainer}>
+      <CountdownContainer>
         <div>
           <span>{minuteLeft}</span>
           <span>{minuteRight}</span>
@@ -34,34 +35,29 @@ export function Countdown() {
           <span>{secondLeft}</span>
           <span>{secondRight}</span>
         </div>
-      </div>
+      </CountdownContainer>
 
-      { finished ? (
-        <button
-          disabled
-          className={`${styles.countdownButton}`}
-        >
+      { hasFinished ? (
+        <CountdownButton disabled>
           Ciclo Finalizado
           <FiCheck size={18} />
-        </button>
+        </CountdownButton>
       ) : (
           <>
-            {active ? (
-              <button
+            {isActive ? (
+              <CountdownButtonActive
                 type="button"
-                className={`${styles.countdownButton} ${styles.countdownButtonActive}`}
                 onClick={resetCountdown}>
                 Abandonar o ciclo
                 <FiX size={18} />
-              </button>
+              </CountdownButtonActive>
             ) : (
-                <button
+                <CountdownButton
                   type="button"
-                  className={styles.countdownButton}
                   onClick={startCountdown}>
                   Iniciar um ciclo
                   <FiChevronRight size={18} />
-                </button>
+                </CountdownButton>
               )}
           </>
         )}
@@ -69,3 +65,5 @@ export function Countdown() {
     </div>
   )
 }
+
+export default Countdown

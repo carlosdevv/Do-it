@@ -1,11 +1,20 @@
-import '../styles/global.css';
+import { AppProps } from 'next/app'
+import { ThemeProvider } from 'styled-components'
 
-import { ChallengesProvider } from '../contexts/ChallengesContext';
+import GlobalStyle from '../styles/global'
+import { ContainerPage } from '../styles/global'
+import theme from '../styles/theme'
 
-function MyApp({ Component, pageProps }) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
-    <Component {...pageProps} />
+    <ThemeProvider theme={theme}>
+      
+      <ContainerPage>
+        <Component {...pageProps} />
+      </ContainerPage>
+
+      <GlobalStyle />
+    </ThemeProvider>
   )
 }
 
-export default MyApp
